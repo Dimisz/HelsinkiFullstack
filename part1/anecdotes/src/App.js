@@ -1,4 +1,6 @@
 import Button from './components/Button';
+import MostVotedAnecdote from './components/MostVotedAnecdote';
+
 import { useState } from 'react'
 
 const App = () => {
@@ -15,8 +17,18 @@ const App = () => {
   // managing states
   const [selected, setSelected] = useState(0);
   const [votes, setVotes] = useState(new Array(anecdotes.length).fill(0));
+  const [maxVotes, setMaxVotes] = useState(0);
+  const [mostVotedIndex, setMostVotedIndex] = useState(0);
 
   // click handlers
+  const updateVotesStats = () => {
+    const largest = Math.max.apply(0, votes);
+    const index = votes.indexOf(largest);
+    setMaxVotes(largest);
+    setMostVotedIndex(index);
+    //console.log('votes updated', maxVotes, mostVotedIndex);
+  }
+
   const getRandomAnecdote = () => {
     const randomAnecdote = Math.floor(Math.random() * anecdotes.length);
     setSelected(randomAnecdote);
@@ -26,13 +38,17 @@ const App = () => {
     const copy = [...votes];
     copy[selected] += 1;
     setVotes(copy);
+    updateVotesStats();
   }
+
 
   return (
     <div>
+      <h1>Anecdote of the day</h1>
       <p>{anecdotes[selected]}</p>
       <Button clickHandler={votesHandler} text="vote" />
       <Button clickHandler={getRandomAnecdote} text="next anecdote" />
+      <MostVotedAnecdote anecdote={anecdotes[mostVotedIndex]} votes={maxVotes} />
     </div>
   )
 }
