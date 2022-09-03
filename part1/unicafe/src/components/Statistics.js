@@ -1,7 +1,11 @@
-const Stats = ({ good, neutral, bad }) => {
+const Statistics = ({ good, neutral, bad }) => {
     const total = good + neutral + bad;
-    const average = (good - bad) / total;
-    const positive = (good / total) * 100;
+    let average = 0;
+    let positive = 0;
+    if(total > 0){
+        average = (good - bad) / total;
+        positive = (good / total) * 100;
+    }
 
     return (
         <section>
@@ -16,4 +20,4 @@ const Stats = ({ good, neutral, bad }) => {
     )
 }
 
-export default Stats;
+export default Statistics;

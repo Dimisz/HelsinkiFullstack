@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
 
 import Button from './components/Button';
-import Stats from './components/Stats';
+import Statistics from './components/Statistics';
 
 function App() {
   const [goodCount, setGoodCount] = useState(0);
@@ -27,7 +27,7 @@ function App() {
     <Button clickHandler={goodCountHandler} text="good" />
     <Button clickHandler={neutralCountHandler} text="neutral" />
     <Button clickHandler={badCountHandler} text="bad" />
-    <Stats good={goodCount}
+    <Statistics good={goodCount}
             neutral={neutralCount}
             bad={badCount}
     />
