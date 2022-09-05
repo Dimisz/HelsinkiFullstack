@@ -2,11 +2,14 @@ import Header from "./Header";
 import Content from "./Content";
 import Total from "./Total";
 const Course = ({ course }) => {
-    let totalExercises = 0;
-    for(let i = 0; i < course.parts.length; i++){
-        totalExercises += course.parts[i].exercises;
-    }
-    
+  
+  const totalExercises = course.parts.reduce((sum, part) => {
+    //console.log(sum, part.exercises);
+    return sum + part.exercises;
+  }, 0);
+  console.log(totalExercises);
+
+
     return(
         <>
             <Header courseName={course.name} />
