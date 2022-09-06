@@ -1,5 +1,9 @@
 import { useState } from 'react'
 
+import Filter from './components/Filter';
+import PersonForm from './components/PersonForm';
+import Persons from './components/Persons';
+
 const App = () => {
   const [persons, setPersons] = useState([
     { name: 'Arto Hellas', number: '040-123456', id: 1 },
@@ -38,9 +42,10 @@ const App = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const newNameObj = {name: newName, number: newNumber};
+    const newNameObj = {name: newName, number: newNumber, id: persons.length + 1};
     if(!isDuplicate(newNameObj)){
       setPersons(persons.concat(newNameObj));
+      setFilteredPersons(persons);
     }
     setNewName('');
     setNewNumber('');
@@ -53,7 +58,7 @@ const App = () => {
     }
     else{
       setFilteredPersons(persons.filter((person) => person.name.toLowerCase().includes(filterTerm)));
-      console.log(filteredPersons);
+      //console.log(filteredPersons);
     }
   }
 
@@ -63,26 +68,17 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
 
-      <div>
-        filter shown with
-        <input onChange={handleNamesFilter} />
-      </div>
-
-      <form onSubmit={handleSubmit}>
-        <div>
-          name: <input value={newName} onChange={handleNewNameChange} />
-        </div>
-        <div>
-          number: <input value={newNumber} onChange={handleNewNumberChange} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <Filter filterFunction={handleNamesFilter} />
+      
+      <PersonForm submitHandler={handleSubmit} 
+                  handleNameChange={handleNewNameChange}
+                  handleNumberChange={handleNewNumberChange}
+                  nameValue={newName}
+                  numberValue={newNumber}
+      />
+      
       <h2>Numbers</h2>
-      {filteredPersons.map((person) => (
-        <p key={Math.random()}>{person.name} {person.number}</p>
-      ))}
+      <Persons personsList={filteredPersons} />
     </div>
   )
 }
