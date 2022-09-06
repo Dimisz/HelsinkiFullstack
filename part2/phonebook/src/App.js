@@ -11,12 +11,26 @@ const App = () => {
     setNewName(event.target.value);
   }
 
+  const isDuplicate = (name) => {
+    for(let i = 0; i < persons.length; i++){
+      if(name === persons[i].name){
+        alert(`${name} already added to the phone book`);
+        return true;
+      }
+    }
+    return false;
+  }
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const newNameObj = {name: newName};
-    setPersons(persons.concat(newNameObj));
+    if(!isDuplicate(newName)){
+      setPersons(persons.concat(newNameObj));
+    }
     setNewName('');
   }
+
+  
 
   return (
     <div>
