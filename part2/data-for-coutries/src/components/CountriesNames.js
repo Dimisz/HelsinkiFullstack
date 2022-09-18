@@ -1,5 +1,5 @@
 
-const CountryName = ({ countries }) => {
+const CountriesNames = ({ countries }) => {
     return (
         <>
             {countries.map((country) => (
@@ -9,4 +9,4 @@ const CountryName = ({ countries }) => {
     )
 }
 
-export default CountryName;
+export default CountriesNames;
