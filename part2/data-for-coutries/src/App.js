@@ -9,6 +9,16 @@ const App = () => {
   const [data, setData] = useState([]);
   const [filteredCountries, setFilteredCountries] = useState(data);
 
+  // show a country info when button clicked
+  const showHandler = (arg) => { // SEE CountriesNames FOR IMPLEMENTATION OF PROP PUSHING
+    setFilteredCountries(data.filter((country) => {
+      return country.name.common.toLowerCase().includes(arg.toLowerCase());
+    }))
+    
+    console.log(arg);
+    console.log("btn clicked");
+  }
+
   const getDataFromRestCountries = () => {
     axios 
       .get("https://restcountries.com/v3.1/all")
@@ -17,8 +27,6 @@ const App = () => {
         setData(response.data)
         console.log('got data')
       })
-      // console.log(data);
-      // console.log("got")
   }
 
   useEffect(getDataFromRestCountries, []);
@@ -30,9 +38,8 @@ const App = () => {
     }
     else{
       setFilteredCountries(data.filter((country) => {
-        return country.name.common.toLowerCase().includes(filterTerm);
+        return country.name.common.toLowerCase().includes(event.target.value);
       }))
-      //console.log(filteredCountries.length);
     }
   }
 
@@ -41,7 +48,7 @@ const App = () => {
     <>
       <h1>Hi there</h1>
       <Filter filterFunction={handleSearch}></Filter>
-      <CountriesRenderer countries={filteredCountries} />
+      <CountriesRenderer countries={filteredCountries} showHandler={showHandler}/>
     </>
   );
 }

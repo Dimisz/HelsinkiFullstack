@@ -1,4 +1,4 @@
-const Filter = ({ filterFunction }) => {
+const Filter = ({ filterFunction, searchVal }) => {
     return (
         
         <label>
