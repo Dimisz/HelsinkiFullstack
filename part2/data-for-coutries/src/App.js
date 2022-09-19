@@ -5,9 +5,11 @@ import { useState, useEffect } from 'react';
 import Filter from "./components/Filter";
 import CountriesRenderer from "./components/CountriesRenderer";
 
+//https://api.openweathermap.org/data/2.5/weather?name=London&appid=cb61aeb8b10e911bdce5e58ba935c84c
 const App = () => {
   const [data, setData] = useState([]);
   const [filteredCountries, setFilteredCountries] = useState(data);
+  
 
   // show a country info when button clicked
   const showHandler = (arg) => { // SEE CountriesNames FOR IMPLEMENTATION OF PROP PUSHING
