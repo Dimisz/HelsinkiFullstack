@@ -60,7 +60,18 @@ const App = () => {
   const isDuplicate = (newPerson) => {
     for(let i = 0; i < persons.length; i++){
       if(newPerson.name === persons[i].name){
-        alert(`${newPerson.name} already added to the phonebook`);
+        if(window.confirm(`${newPerson.name} already added to the phone book. Replace phone number with a new one?`)){
+          const newNameObj = {name: newPerson.name, number: newPerson.number, id: newPerson.name + newPerson.number};
+          server.update(persons[i].id, newNameObj)
+            .then((response) => {
+              console.log('deleted')
+              // console.log(response)
+              getPersonsFromServer();
+              console.log('updated user')
+            })
+          //console.log(`delete with id: ${arg.id}`)
+        }
+        //alert(`${newPerson.name} already added to the phonebook`);
         return true;
       }
       else if(newPerson.number === persons[i].number){
