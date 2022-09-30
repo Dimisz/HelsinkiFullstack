@@ -38,7 +38,7 @@ const App = () => {
                     setFilteredPersons(response)
                   })}, [])
 
-  
+  //USE THIS WAY TO ENSURE STATE IS UP TO DATE
   useEffect(()=>{
     setFilteredPersons(persons)
   }, [persons])
