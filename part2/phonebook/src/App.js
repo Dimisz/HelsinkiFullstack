@@ -71,7 +71,7 @@ const App = () => {
               // console.log(response)
               getPersonsFromServer();
               console.log('updated user')
-              setMessageClass('success-added')
+              setMessageClass('success')
               setMessage(`${newPerson.name}'s contact successfully updated`)
 
               setTimeout(()=>{
@@ -109,8 +109,9 @@ const App = () => {
              
               setPersons(persons.concat(newNameObj));
               setFilteredPersons(persons);
+              getPersonsFromServer();
 
-              setMessageClass('success-added')
+              setMessageClass('success')
               setMessage(`${newNameObj.name}'s contact added to the phone book`)
               setTimeout(()=>{
                 setMessage(null)
@@ -143,11 +144,20 @@ const App = () => {
         // console.log(response)
         getPersonsFromServer();
 
-        setMessageClass('success-deleted')
+        setMessageClass('success')
               setMessage(`${arg.name}'s contact deleted from the phone book`)
               setTimeout(()=>{
                 setMessage(null)
               }, 5000)
+      })
+      .catch((error) => {
+        console.log(error)
+        setMessageClass('error')
+        setMessage(`${arg.name}'s information is no longer on the server`)
+        getPersonsFromServer();
+        setTimeout(()=>{
+          setMessage(null)
+        }, 5000)
       })
     console.log(`delete with id: ${arg.id}`)
     }
