@@ -2,10 +2,12 @@ import { useState, useEffect } from 'react'
 import axios from 'axios';
 
 import server from './services/serverConnection';
+import './index.css';
 
 import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
 import Persons from './components/Persons';
+import Notification from './components/Notification';
 
 const App = () => {
   /*
@@ -19,7 +21,8 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('');
   const [filteredPersons, setFilteredPersons] = useState(persons);
-
+  const [message, setMessage] = useState(null);
+  const [messageClass, setMessageClass] = useState('success');
   // const getPersonsHook = () => {
   //   axios 
   //     .get('http://localhost:3001/persons')
@@ -68,6 +71,12 @@ const App = () => {
               // console.log(response)
               getPersonsFromServer();
               console.log('updated user')
+              setMessageClass('success-added')
+              setMessage(`${newPerson.name}'s contact successfully updated`)
+
+              setTimeout(()=>{
+                setMessage(null)
+              }, 5000)
             })
           //console.log(`delete with id: ${arg.id}`)
         }
@@ -100,6 +109,12 @@ const App = () => {
              
               setPersons(persons.concat(newNameObj));
               setFilteredPersons(persons);
+
+              setMessageClass('success-added')
+              setMessage(`${newNameObj.name}'s contact added to the phone book`)
+              setTimeout(()=>{
+                setMessage(null)
+              }, 5000)
             })
       
         setNewName('');
@@ -128,6 +143,11 @@ const App = () => {
         // console.log(response)
         getPersonsFromServer();
 
+        setMessageClass('success-deleted')
+              setMessage(`${arg.name}'s contact deleted from the phone book`)
+              setTimeout(()=>{
+                setMessage(null)
+              }, 5000)
       })
     console.log(`delete with id: ${arg.id}`)
     }
@@ -137,7 +157,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-
+      <Notification message={message} messageClass={messageClass}/>
       <Filter filterFunction={handleNamesFilter} />
       
       <PersonForm submitHandler={handleSubmit} 
