@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios';
 
+import server from './services/serverConnection';
+
 import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
 import Persons from './components/Persons';
@@ -18,16 +20,29 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('');
   const [filteredPersons, setFilteredPersons] = useState(persons);
 
-  const getPersonsHook = () => {
-    axios 
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        console.log('promise fulfilled');
-        setPersons(response.data)
-      })
-  }
+  // const getPersonsHook = () => {
+  //   axios 
+  //     .get('http://localhost:3001/persons')
+  //     .then(response => {
+  //       console.log('promise fulfilled');
+  //       setPersons(response.data)
+  //     })
+  // }
 
-  useEffect(getPersonsHook, []);
+  // useEffect(getPersonsHook, []);
+
+  useEffect(() => {server.getAll()
+                  .then(response => {
+                    console.log(`getAll response: ${response}`)
+                    setPersons(response)
+                    setFilteredPersons(response)
+                  })}, [])
+
+  
+  useEffect(()=>{
+    setFilteredPersons(persons)
+  }, [persons])
+
 
   const handleNewNameChange = (event) => {
     console.log(event.target.value);
@@ -55,13 +70,28 @@ const App = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const newNameObj = {name: newName, number: newNumber, id: persons.length + 1};
-    if(!isDuplicate(newNameObj)){
-      setPersons(persons.concat(newNameObj));
-      setFilteredPersons(persons);
+    if(!newName){
+      alert("Name field should not be empty")
     }
-    setNewName('');
-    setNewNumber('');
+    else if(!newNumber){
+      alert("Phone-number field should not be empty")
+    }
+    else{
+      const newNameObj = {name: newName, number: newNumber, id: persons.length + 1};
+      if(!isDuplicate(newNameObj)){
+        server
+            .create(newNameObj)
+            .then(response => {
+              console.log(`Creating new name: ${response}`)
+             
+              setPersons(persons.concat(newNameObj));
+              setFilteredPersons(persons);
+            })
+      
+        setNewName('');
+        setNewNumber('');
+      }
+    }
   }
 
   const handleNamesFilter = (event) => {
