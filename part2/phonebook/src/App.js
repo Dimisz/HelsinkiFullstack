@@ -30,13 +30,16 @@ const App = () => {
   // }
 
   // useEffect(getPersonsHook, []);
-
-  useEffect(() => {server.getAll()
+  const getPersonsFromServer = () => {
+    server.getAll()
                   .then(response => {
                     console.log(`getAll response: ${response}`)
                     setPersons(response)
                     setFilteredPersons(response)
-                  })}, [])
+                  })
+  }
+
+  useEffect(() => getPersonsFromServer, [])
 
   //USE THIS WAY TO ENSURE STATE IS UP TO DATE
   useEffect(()=>{
@@ -77,7 +80,7 @@ const App = () => {
       alert("Phone-number field should not be empty")
     }
     else{
-      const newNameObj = {name: newName, number: newNumber, id: persons.length + 1};
+      const newNameObj = {name: newName, number: newNumber, id: newName+newNumber};
       if(!isDuplicate(newNameObj)){
         server
             .create(newNameObj)
@@ -105,6 +108,19 @@ const App = () => {
     }
   }
 
+  const handleDelete = (arg) => {
+    if(window.confirm(`Delete ${arg.name}?`)){
+    server
+      .deleteContact(arg.id)
+      .then((response) => {
+        console.log('deleted')
+        // console.log(response)
+        getPersonsFromServer();
+
+      })
+    console.log(`delete with id: ${arg.id}`)
+    }
+  }
   
 
   return (
@@ -121,7 +137,7 @@ const App = () => {
       />
       
       <h2>Numbers</h2>
-      <Persons personsList={filteredPersons} />
+      <Persons personsList={filteredPersons} handleDelete={handleDelete}/>
     </div>
   )
 }
