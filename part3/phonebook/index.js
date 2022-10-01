@@ -55,7 +55,22 @@ app.get('/api/persons/:id', (req, res) => {
 })
 
 
-
+app.delete('/api/persons/:id', (req, res) => {
+    //console.log('received request')
+    const id = Number(req.params.id)
+    console.log(`${id}, ${typeof(id)}`)
+    persons = persons.filter(person => person.id !== id)
+    // res.status(204).end()
+    
+    if(persons){
+        res.json(persons)
+        res.status(204).end()
+    }
+    else{
+        console.log(`no person with id ${id} found`)
+        res.status(404).end()
+    }
+})
 
 app.listen(PORT, () => {
     console.log(`Server runnning on port ${PORT}`)
