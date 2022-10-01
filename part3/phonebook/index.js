@@ -45,6 +45,7 @@ app.get('/api/persons', (req, res) => {
 app.get('/api/persons/:id', (req, res) => {
     const id = Number(req.params.id)
     const person = persons.find(person => person.id === id)
+
     if(person){
         res.json(person)
     }
@@ -90,10 +91,25 @@ app.post('/api/persons', (req, res) => {
             error: 'number missing'
         })
     }
+
+    const personNameExists = persons.find(person => person.name === body.name)
+    if(personNameExists){
+        return res.status(400).json({
+            error: `A person with name ${body.name} already exists`
+        })
+    }
+
+    const personNumberExists = persons.find(person => person.number === body.number)
+    if(personNumberExists){
+        return res.status(400).json({
+            error: `Number: ${body.number} already exists`
+        })
+    }
+
     const person = {
+        id: generateId(),
         name: body.name,
-        number: body.number,
-        id: generateId()
+        number: body.number
     }
 
     persons = persons.concat(person)
