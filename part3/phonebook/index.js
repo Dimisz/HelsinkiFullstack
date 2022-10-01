@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 const PORT = 3001
 
-//app.use(express.json)
+app.use(express.json())
 
 let persons = [
     { 
@@ -29,6 +29,13 @@ let persons = [
 
 app.get('/', (req, res) => {
     res.send('<h1>hello from phonebook</h1>')
+})
+
+app.get('/info', (req, res) => {
+    const numPersons = persons.length
+    res.write(`<p>Phonebook has info for ${numPersons} persons</p>`)
+    res.write(`<p>${new Date().toISOString()}</p>`)
+    res.end()
 })
 
 app.get('/api/persons', (req, res) => {
