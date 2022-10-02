@@ -1,8 +1,20 @@
 const express = require('express')
 const app = express()
+const morgan = require('morgan')
 const PORT = 3001
 
 app.use(express.json())
+
+// const requestLogger = (request, response, next) => {
+//     console.log('Method:', request.method)
+//     console.log('Path:  ', request.path)
+//     console.log('Body:  ', request.body)
+//     console.log('---')
+//     next()
+// }
+const requestLogger = morgan('tiny')
+
+app.use(requestLogger)
 
 let persons = [
     { 
@@ -115,6 +127,14 @@ app.post('/api/persons', (req, res) => {
     persons = persons.concat(person)
     res.json(persons)
 })
+
+
+const unknownEndpoint = (request, response) => {
+    response.status(404).send({ error: 'unknown endpoint' })
+  }
+  
+app.use(unknownEndpoint)
+
 
 app.listen(PORT, () => {
     console.log(`Server runnning on port ${PORT}`)
