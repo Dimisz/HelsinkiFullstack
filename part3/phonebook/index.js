@@ -12,9 +12,11 @@ app.use(express.json())
 //     console.log('---')
 //     next()
 // }
-const requestLogger = morgan('tiny')
+// const requestLogger = morgan('tiny')
 
-app.use(requestLogger)
+// app.use(requestLogger)
+morgan.token('body', (req, res) => JSON.stringify(req.body));
+app.use(morgan(':method :url :status :response-time ms - :res[content-length] :body - :req[content-length]'));
 
 let persons = [
     { 
